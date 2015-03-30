@@ -1,0 +1,33 @@
+<html>
+<head>
+    <title>Thesaurus Application</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+</head>
+<body>
+<h2>Thesaurus Application</h2>
+
+<div ng-app="mainApp" ng-controller="studentController">
+    <ul ng-repeat="student in students">
+        <li ng-repeat="noun in student.syn" ng-click="getItems(noun)">{{noun}}</li>
+    </ul>
+</div>
+<script>
+    var mainApp = angular.module("mainApp", []);
+
+    mainApp.controller('studentController', function ($scope, $window, $http) {
+        $scope.greeting = 'heed';
+        var url = "http://words.bighugelabs.com/api/2/a5660259832107069a17d6639b6b0a70/" + $scope.greeting + "/json";
+        $http.get(url).success(function (response) {
+            $scope.students = response;
+        });
+        $scope.getItems = function (item) {
+            $window.alert(item);
+            var url = "http://words.bighugelabs.com/api/2/a5660259832107069a17d6639b6b0a70/" + item + "/json";
+            $http.get(url).success(function (response) {
+                $scope.students = response;
+            });
+        };
+    });
+</script>
+</body>
+</html>
